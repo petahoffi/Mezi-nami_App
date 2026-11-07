@@ -29,3 +29,10 @@ npx wrangler pages deploy . --project-name mezi-nami-app
 ```
 
 Nebo v Cloudflare dashboardu propojit tento repozitář (Workers & Pages → Create → Pages → Connect to Git), build command prázdný, output directory `/`.
+
+### Automatické nasazení
+
+Každý push do `main` spustí workflow `.github/workflows/deploy.yml`, které prototyp nasadí na Cloudflare Pages. Potřebuje dva repository secrets (Settings → Secrets and variables → Actions):
+
+- `CLOUDFLARE_API_TOKEN` – token s oprávněním *Cloudflare Pages: Edit* (vytvoří se v Cloudflare → My Profile → API Tokens)
+- `CLOUDFLARE_ACCOUNT_ID` – ID účtu (vidět v `npx wrangler whoami`)
