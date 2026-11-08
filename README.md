@@ -9,6 +9,8 @@ Klikací prototyp bez backendu. Všechna data jsou smyšlená a ukládají se je
 - `styles.css` – veškeré styly (design tokeny, tmavý režim, škálování písma)
 - `data.js` – číselníky a ukázková data (`window.MN_DATA`)
 - `app.js` – logika aplikace (role senior / škola / koordinátorka)
+- `analytics-config.js`, `analytics.js`, `analytics-debug.js` – měření (GA4, GTM, Meta Pixel, Cloudflare WA) se souhlasem, viz [ANALYTICS.md](ANALYTICS.md)
+- `tests/analytics.test.js` – automatický test měření
 
 Ukázkové účty jsou na přihlašovací obrazovce, heslo pro všechny je `ukazka`.
 

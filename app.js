@@ -176,6 +176,10 @@ function render() {
   renderOverlay();
   renderToast();
   save();
+  if (window.MN_TRACK) {
+    const r = role();
+    window.MN_TRACK.sync({ role: r || null, screen: r ? U.tab[r] : 'login', consent: r === 'senior' ? !!(me().consents && me().consents.analytics) : undefined });
+  }
 }
 function renderOverlay() {
   const o = $('#overlay');
@@ -214,6 +218,7 @@ function menuPop() {
     <button role="menuitem" data-act="switchRole">${ICON.swap.replace('<svg', '<svg style="width:18px;vertical-align:-4px;margin-right:8px"')}Přepnout roli (ukázka)</button>
     <button role="menuitem" data-act="theme">${ICON.moon.replace('<svg', '<svg style="width:18px;vertical-align:-4px;margin-right:8px"')}${dark ? 'Světlý vzhled' : 'Tmavý vzhled'}</button>
     <button role="menuitem" data-act="resetDemo">${ICON.refresh.replace('<svg', '<svg style="width:18px;vertical-align:-4px;margin-right:8px"')}${U.confirmReset ? 'Opravdu? Klikněte znovu' : 'Obnovit ukázková data'}</button>
+    ${role() !== 'senior' ? `<button role="menuitem" data-act="analyticsPrefs">${ICON.shield.replace('<svg', '<svg style="width:18px;vertical-align:-4px;margin-right:8px"')}Nastavení měření</button>` : ''}
     <button role="menuitem" data-act="logout">${ICON.out.replace('<svg', '<svg style="width:18px;vertical-align:-4px;margin-right:8px"')}Odhlásit se</button>
   </div>`;
 }
@@ -525,7 +530,7 @@ function seniorProfile(s) {
       ${sw('location', 'Ukazovat mě školám na mapě', 'Jen přibližná oblast, nikdy adresa.')}
       ${sw('community', 'Seznamování ve Spolu', 'Ostatní senioři uvidí křestní jméno a zájmy.')}
       ${sw('photo', 'Fotografie v profilu', 'Vidí ji jen ověřené školy.')}
-      ${sw('analytics', 'Anonymní měření používání', 'Bez cookies, pomáhá nám aplikaci zlepšovat.')}
+      ${sw('analytics', 'Anonymní měření používání', 'Bez jmen a zpráv, pomáhá nám aplikaci zlepšovat. Může používat cookies (Google Analytics).')}
       <div class="row"><button class="btn grow" data-act="myData">${ICON.copy} Zobrazit moje data</button><button class="btn grow" data-act="deleteReq">Požádat o smazání účtu</button></div>
       <p class="small muted">Správcem údajů je Mezi námi, o.p.s. Data jsou uložena v EU. Zprávy pod Hlídáčkem se mažou po 30 dnech.</p></section>
     <button class="btn ghost block" data-act="logout">${ICON.out} Odhlásit se</button>
@@ -548,7 +553,7 @@ function sheetOnboarding(sh) {
     <label class="check"><input type="checkbox" name="terms" required><span><b>Souhlasím s podmínkami používání</b> (povinné)</span></label>
     <label class="check"><input type="checkbox" name="location"><span>Ukazovat mou přibližnou oblast školám na mapě <span class="muted">(doporučujeme, jinak vás školy nenajdou)</span></span></label>
     <label class="check"><input type="checkbox" name="photo"><span>Zobrazovat fotografii v profilu</span></label>
-    <label class="check"><input type="checkbox" name="analytics"><span>Anonymní měření používání bez cookies</span></label>
+    <label class="check"><input type="checkbox" name="analytics"><span>Anonymní měření používání (bez jmen a zpráv, může používat cookies Google Analytics)</span></label>
     <button class="btn primary block">Začít používat</button></form>`, { noClose: true });
 }
 function sheetSuper() {
@@ -1038,6 +1043,7 @@ const A = {
   menu: () => { U.menu = !U.menu; U.confirmReset = false; render(); },
   switchRole: () => { S.session = null; afterLogin(); },
   logout: () => { S.session = null; afterLogin(); },
+  analyticsPrefs: () => { U.menu = false; render(); if (window.MN_TRACK) window.MN_TRACK.consent.reopen(); },
   theme: () => {
     const r = document.documentElement, cur = r.getAttribute('data-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     const nx = cur === 'dark' ? 'light' : 'dark'; r.setAttribute('data-theme', nx); pref('theme', nx); U.menu = false; render();
