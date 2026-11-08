@@ -1,0 +1,16 @@
+# Bezpečnostní hlavičky pro Cloudflare Pages (soubor musí ležet v kořeni repozitáře).
+# Po nasazení ověř na https://securityheaders.com
+
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), payment=(), usb=(), geolocation=(self)
+  X-Frame-Options: DENY
+
+  # CSP je zatím jen v režimu Report-Only: nic neblokuje, jen hlásí do konzole prohlížeče
+  # (F12 → Console), co by se zablokovalo. Až bude konzole čistá, přejmenuj hlavičku na
+  # "Content-Security-Policy" (smaž "-Report-Only").
+  # Pokud Leaflet nebo mapové dlaždice načítáš z jiné adresy než unpkg.com / OpenStreetMap,
+  # doplň ji do script-src, style-src a img-src.
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://www.googletagmanager.com https://connect.facebook.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://unpkg.com https://www.google-analytics.com https://www.googletagmanager.com https://www.facebook.com; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.facebook.com https://cloudflareinsights.com; frame-src https://www.googletagmanager.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
