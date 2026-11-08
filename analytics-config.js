@@ -5,7 +5,7 @@
  */
 window.MN_ANALYTICS_CONFIG = {
   // Doporučený způsob: Google Tag Manager. GA4 a další značky se pak nastavují v GTM.
-  GTM_ID: '',            // např. 'GTM-ABC1234'
+  GTM_ID: 'GTM-5TXRDRZD',            // např. 'GTM-ABC1234'
 
   // Přímé GA4 bez GTM. Použije se jen tehdy, když je GTM_ID prázdné (jinak by se měřilo dvakrát).
   GA4_ID: '',            // např. 'G-ABCDEF1234'
